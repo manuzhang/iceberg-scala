@@ -36,3 +36,8 @@ val plannedFiles = scan.planFiles()
 ```
 
 Use `.java` on wrappers whenever you need direct access to the underlying Iceberg Java object.
+
+## Additional example
+
+A runnable reference object is available at `src/main/scala/org/apache/iceberg/scalaapi/ExampleUsage.scala`.
+It demonstrates table creation-or-load, scan planning, and write/delete operations while mixing Scala wrappers with raw Java access via `.java`.
