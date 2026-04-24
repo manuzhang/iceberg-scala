@@ -39,3 +39,4 @@ val plannedFiles = scan.planFiles()
 
 A runnable reference object is available at `src/main/scala/org/apache/iceberg/scalaapi/ExampleUsage.scala`.
 It demonstrates table creation-or-load, scan planning, and write/delete operations using only the Scala wrapper API.
+It also shows how to access metadata tables (such as `SNAPSHOTS`) from `ScalaTable`.

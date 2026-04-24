@@ -1,6 +1,6 @@
 package org.apache.iceberg.scalaapi
 
-import org.apache.iceberg.{DataFile, Schema}
+import org.apache.iceberg.{DataFile, MetadataTableType, Schema}
 import org.apache.iceberg.catalog.Catalog
 import org.apache.iceberg.types.Types
 
@@ -36,6 +36,15 @@ object ExampleUsage {
     table.append(newDataFiles)
     table.deleteWhere(ExpressionsScala.lessThan("order_id", 0L))
 
+    // Check record and snapshot metadata using Scala wrapper methods.
+    val totalRecords = table.currentSnapshot
+      .flatMap(snapshot => Option(snapshot.summary().get("total-records")))
+      .getOrElse("unknown")
+    val snapshotsMetadataTable = table.metadataTable(MetadataTableType.SNAPSHOTS)
+    val snapshotTasks = snapshotsMetadataTable.scan.planFiles()
+
     println(s"Planned ${files.size} file scan task(s)")
+    println(s"Current snapshot total records: $totalRecords")
+    println(s"Planned ${snapshotTasks.size} snapshot metadata file task(s)")
   }
 }

@@ -2,7 +2,17 @@ package org.apache.iceberg.scalaapi
 
 import scala.jdk.CollectionConverters._
 
-import org.apache.iceberg.{DataFile, PartitionSpec, Schema, Snapshot, SortOrder, Table, Transaction}
+import org.apache.iceberg.{
+  DataFile,
+  MetadataTableType,
+  MetadataTableUtils,
+  PartitionSpec,
+  Schema,
+  Snapshot,
+  SortOrder,
+  Table,
+  Transaction
+}
 import org.apache.iceberg.expressions.Expression
 
 final case class ScalaTable(private val table: Table) {
@@ -24,6 +34,9 @@ final case class ScalaTable(private val table: Table) {
   def scan: ScalaTableScan = ScalaTableScan(table.newScan())
 
   def scan(filter: Expression): ScalaTableScan = ScalaTableScan(table.newScan().filter(filter))
+
+  def metadataTable(metadataTableType: MetadataTableType): ScalaTable =
+    ScalaTable(MetadataTableUtils.createMetadataTableInstance(table, metadataTableType))
 
   def append(dataFiles: Iterable[DataFile]): Unit = {
     val append = table.newAppend()
